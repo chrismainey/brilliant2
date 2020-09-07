@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![R build
+status](https://github.com/chrismainey/brilliant/workflows/R-CMD-check/badge.svg)](https://github.com/chrismainey/brilliant/actions)
 <!-- badges: end -->
 
 The goal of brilliant is to demonstrate some steps for building R
