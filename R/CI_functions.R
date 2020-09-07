@@ -9,6 +9,7 @@
 #' @note This function will automatically convert to two-tailed probability, e.g. 0.95 to 0.975.
 #'
 #' @return A numeric value for confidence interval
+#' @importFrom stats qnorm
 #' @export
 #'
 #' @examples
@@ -20,9 +21,9 @@
 #'
 my_CI_lower <- function(value, se, prob=0.95){
 
-  two_tail_prob <- (1-prob) / 2
+  two_tail_prob <- 1-((1-prob) / 2)
 
-  ci_lower <- value - (qnorm(two_tail_prob,mean=0, sd=1) * se)
+  ci_lower <- value - (qnorm(two_tail_prob,mean=0, sd=1, lower.tail = TRUE) * se)
 
  return(ci_lower)
 
@@ -44,6 +45,7 @@ my_CI_lower <- function(value, se, prob=0.95){
 #'
 #' @return A numeric value for confidence interval
 #' @export
+#' @importFrom stats qnorm
 #'
 #' @examples
 #' #' # With a value of 100 and a known standard error of of 10, a 95% interval is:
@@ -54,9 +56,9 @@ my_CI_lower <- function(value, se, prob=0.95){
 #'
 my_CI_upper <- function(value, se, prob=0.95){
 
-  two_tail_prob <- (1-prob) / 2
+  two_tail_prob <- 1-((1-prob) / 2)
 
-  ci_upper <- value + (qnorm(two_tail_prob,mean=0, sd=1) * se)
+  ci_upper <- value + (qnorm(two_tail_prob,mean=0, sd=1, lower.tail = TRUE) * se)
 
   return(ci_upper)
 
