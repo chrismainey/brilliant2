@@ -12,3 +12,5 @@ LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
     testthat
+URL: https://github.com/chrismainey/brilliant
+BugReports: https://github.com/chrismainey/brilliant/issues
