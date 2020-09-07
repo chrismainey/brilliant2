@@ -7,6 +7,8 @@
 
 [![R build
 status](https://github.com/chrismainey/brilliant/workflows/R-CMD-check/badge.svg)](https://github.com/chrismainey/brilliant/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/chrismainey/brilliant/branch/master/graph/badge.svg)](https://codecov.io/gh/chrismainey/brilliant?branch=master)
 <!-- badges: end -->
 
 The goal of brilliant is to demonstrate some steps for building R
