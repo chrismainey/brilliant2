@@ -22,24 +22,53 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(brilliant)
-## 50 random values with mean = 50 and sd = 5
+library(NHSRdatasets)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 
-values <- rnorm(50, 50, 5)
-mean <- mean(values)
-sd <- sd(values)
-n <- length(values)
-se <- sd / sqrt(n)
-ci_lower <- my_CI_lower(values, 5)
-ci_upper <- my_CI_upper(values, 5)
+## we'll look at average age, and 95% Ci around it, in the LoS_data.
+data("LOS_model")
 
-my_dt<-data.frame(id=seq(50),values, ci_upper, ci_lower)
+ages_dt<-
+  LOS_model %>% 
+  group_by(Organisation) %>% 
+  summarise(
+    mean = mean(Age),
+    sd = sd(Age),
+    n = n(),
+    se = sd(Age)/n()
+  )
+#> `summarise()` ungrouping output (override with `.groups` argument)
+
+ages_dt <-
+  ages_dt %>% 
+  mutate(
+    lower95 = my_CI_lower(mean, se, prob = 0.95),
+    upper95 = my_CI_upper(mean, se, prob = 0.95)
+  )
+
+# Total mean
+mean_full <- mean(LOS_model$Age)
 
 library(ggplot2)
-
-ggplot(my_dt, aes(y=values, x=id))+
+ggplot(ages_dt, aes(y=mean, x=factor(Organisation)))+
   geom_point()+
-  geom_hline(aes(yintercept=mean), col="red", linetype="dashed")+
-  geom_errorbar(aes(ymin=ci_lower, ymax=ci_upper))
+  geom_hline(aes(yintercept=mean_full), col="red")+
+  geom_errorbar(aes(ymin=lower95, ymax=upper95)) +
+  theme_minimal()
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
+
+So, (and this is where we mustn’t be confused by what a CI is), if we
+repeated our sampling and infinite number of time, the Trust means would
+be within these ranges 95% of the time. We will therefore assume, from
+our evidence, that mean Age is significantly higher than global average
+at Trusts 1 and 7, and significantly lower at Trusts 3, 5 and 6.
